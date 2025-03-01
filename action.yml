@@ -1,0 +1,17 @@
+name: 'Check Changelog and Version'
+description: 'Checks if the CHANGELOG and version in package.json are updated correctly in a pull request.'
+inputs:
+  changelog_file:
+    description: 'Path to the CHANGELOG file.'
+    required: true
+    default: 'CHANGELOG.md'
+  version_file:
+    description: 'Path to the version file (e.g., package.json).'
+    required: true
+    default: 'package.json'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    CHANGELOG_FILE: ${{ inputs.changelog_file }}
+    VERSION_FILE: ${{ inputs.version_file }}
