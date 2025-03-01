@@ -5,9 +5,11 @@
 Check changelog and version action
 ===========================
 
-This repository contains reusable action for checking whether the changelog and version was updated on pull request
+This repository contains reusable action for checking whether the changelog and
+version was updated on pull request
 
-Example usage, put below code into `changelog.yml` in `.github/workflows` directory:
+Example usage, put below code into `changelog.yml` in `.github/workflows`
+directory:
 
 ```
 name: Check Changelog and Version
@@ -39,12 +41,13 @@ jobs:
 `index.js` file have to be compiled before commiting, use:
 
 ```
-npm i -g @vercel/ncc
-ncc build index.js --license license
+npm run bundle
 ```
 
 ## Collaborating
 
-If you wish to talk with us about this project, feel free to hop on our [![Discord Chat](https://img.shields.io/discord/682699728454025410.svg)](https://discord.gg/FwXcHnX).
+If you wish to talk with us about this project, feel free to hop on our
+[![Discord Chat](https://img.shields.io/discord/682699728454025410.svg)](https://discord.gg/FwXcHnX).
 
-If you found a bug, please report it in [issues](https://github.com/flotiq/check-changelog-and-version/issues).
+If you found a bug, please report it in
+[issues](https://github.com/flotiq/check-changelog-and-version/issues).

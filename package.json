@@ -1,15 +1,23 @@
 {
   "name": "check-changelog-and-version",
   "version": "1.0.1",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": "https://github.com/flotiq/check-changelog-and-version.git",
   "author": "Hello FLotiq <hello@flotiq.com>",
   "license": "MIT",
+  "type": "module",
   "scripts": {
-    "bundle": "npm run format:write && npm run package"
+    "bundle": "npm run format:write && npm run package",
+    "format:write": "npx prettier --write .",
+    "package": "npx rollup --config rollup.config.js"
   },
   "dependencies": {
     "@actions/core": "^1.11.1",
-    "@actions/github": "^6.0.0"
+    "@actions/github": "^6.0.0",
+    "prettier": "^3.5.2"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.2",
+    "@rollup/plugin-node-resolve": "^16.0.0"
   }
 }

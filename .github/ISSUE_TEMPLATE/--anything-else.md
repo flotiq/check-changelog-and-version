@@ -1,7 +1,7 @@
 ---
-name: "Anything else"
-about: "For help, support, features & ideas - please use https://discord.gg/FwXcHnX"
-
+name: 'Anything else'
+about:
+  'For help, support, features & ideas - please use https://discord.gg/FwXcHnX'
 ---
 
 Click "Preview" for a nicer view!

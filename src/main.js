@@ -1,14 +1,15 @@
-const core = require('@actions/core');
-const github = require('@actions/github');
-const fs = require('fs');
-const { execSync, spawnSync } = require('child_process');
+import * as core from '@actions/core';
+import * as github from '@actions/github';
+import fs from 'fs';
+import { execSync, spawnSync } from 'child_process';
 
-async function run() {
+export async function run() {
   try {
     const changelogFile = core.getInput('changelog_file') || 'CHANGELOG.md';
     const versionFile = core.getInput('version_file') || 'package.json';
     const sourceBranch = github.context.payload.pull_request?.head?.ref;
-    const targetBranch = github.context.payload.pull_request?.base?.ref || 'main';
+    const targetBranch =
+      github.context.payload.pull_request?.base?.ref || 'main';
 
     const red = '\x1b[31;1m';
     const green = '\x1b[32;1m';
@@ -27,8 +28,12 @@ async function run() {
     }
 
     // Install dependencies
-    execSync('npx -q semver-compare-cli --help > /dev/null || npm install -g semver-compare-cli');
-    execSync('npx -q changelog-parser --help > /dev/null || npm install -g changelog-parser');
+    execSync(
+      'npx -q semver-compare-cli --help > /dev/null || npm install -g semver-compare-cli'
+    );
+    execSync(
+      'npx -q changelog-parser --help > /dev/null || npm install -g changelog-parser'
+    );
 
     // Make sure CHANGELOG has Unix line endings
     if (fs.existsSync(changelogFile)) {
@@ -41,9 +46,19 @@ async function run() {
     execSync(`git fetch origin ${targetBranch}`);
     const targetRef = `origin/${targetBranch}`;
     console.log(`target ref ${targetRef}`);
-    const commonAncestor = execSync(`git merge-base HEAD ${targetRef}`).toString().trim();
-    const changedFiles = execSync(`git diff -w --name-only HEAD ${commonAncestor}`).toString().trim();
-    const changedFilesToTarget = execSync(`git diff -w --name-only HEAD "${targetRef}"`).toString().trim();
+    const commonAncestor = execSync(`git merge-base HEAD ${targetRef}`)
+      .toString()
+      .trim();
+    const changedFiles = execSync(
+      `git diff -w --name-only HEAD ${commonAncestor}`
+    )
+      .toString()
+      .trim();
+    const changedFilesToTarget = execSync(
+      `git diff -w --name-only HEAD "${targetRef}"`
+    )
+      .toString()
+      .trim();
 
     let currentVersion = '0.0.0';
     if (fs.existsSync(versionFile)) {
@@ -54,14 +69,18 @@ async function run() {
 
     let remoteVersion = '0.0.0';
     try {
-      remoteVersion = readVersion(execSync(`git show ${targetRef}:${versionFile}`).toString());
+      remoteVersion = readVersion(
+        execSync(`git show ${targetRef}:${versionFile}`).toString()
+      );
     } catch (e) {
       console.log(`No remote ${versionFile} exists, assuming v0.0.0`);
     }
 
     let oldVersion = '0.0.0';
     try {
-      oldVersion = readVersion(execSync(`git show ${commonAncestor}:${versionFile}`).toString());
+      oldVersion = readVersion(
+        execSync(`git show ${commonAncestor}:${versionFile}`).toString()
+      );
     } catch (e) {
       console.log(`No old ${versionFile} exists, assuming v0.0.0`);
     }
@@ -81,39 +100,55 @@ async function run() {
     }
 
     if (changedFilesToTarget.includes(versionFile)) {
-      echoGreen(`${versionFile} file changed compared to current ${targetBranch}`);
+      echoGreen(
+        `${versionFile} file changed compared to current ${targetBranch}`
+      );
     } else {
-      echoRed(`${versionFile} file did not change compared to current ${targetBranch}`);
+      echoRed(
+        `${versionFile} file did not change compared to current ${targetBranch}`
+      );
       failed = true;
     }
 
     function semverCompare(version1, version2) {
-      const result = spawnSync('npx', ['semver-compare-cli', version1, version2]);
+      const result = spawnSync('npx', [
+        'semver-compare-cli',
+        version1,
+        version2,
+      ]);
       console.log(result);
       return result.status; // Get the exit code
     }
 
-    if (semverCompare(currentVersion, oldVersion) === 0) {
+    if (semverCompare(currentVersion, oldVersion) === 1) {
       echoGreen(`version in ${versionFile} increased on ${sourceBranch}`);
     } else {
       echoRed(`version in ${versionFile} needs to increase on ${sourceBranch}`);
       failed = true;
     }
 
-    if (semverCompare(currentVersion, remoteVersion) === 0) {
-      echoGreen(`version in ${versionFile} increased compared to current ${targetRef}`);
+    if (semverCompare(currentVersion, remoteVersion) === 1) {
+      echoGreen(
+        `version in ${versionFile} increased compared to current ${targetRef}`
+      );
     } else {
-      echoRed(`version in ${versionFile} needs to be higher than on ${targetRef}`);
+      echoRed(
+        `version in ${versionFile} needs to be higher than on ${targetRef}`
+      );
       failed = true;
     }
 
     let changelogStruct = '{"versions":[]}';
     if (fs.existsSync(changelogFile)) {
-      changelogStruct = execSync(`npx changelog-parser ${changelogFile}`).toString();
+      changelogStruct = execSync(
+        `npx changelog-parser ${changelogFile}`
+      ).toString();
     }
 
     try {
-      JSON.parse(changelogStruct).versions.find(v => v.version === currentVersion);
+      JSON.parse(changelogStruct).versions.find(
+        (v) => v.version === currentVersion
+      );
       echoGreen(`${changelogFile} file contains ${currentVersion}`);
     } catch (e) {
       echoRed(`${changelogFile} file does not contain ${currentVersion}`);
@@ -128,9 +163,13 @@ async function run() {
     }
 
     if (changedFilesToTarget.includes(changelogFile)) {
-      echoGreen(`${changelogFile} file changed compared to current ${targetBranch}`);
+      echoGreen(
+        `${changelogFile} file changed compared to current ${targetBranch}`
+      );
     } else {
-      echoRed(`${changelogFile} file did not change compared to current ${targetBranch}`);
+      echoRed(
+        `${changelogFile} file did not change compared to current ${targetBranch}`
+      );
       failed = true;
     }
 
@@ -141,5 +180,3 @@ async function run() {
     core.setFailed(error.message);
   }
 }
-
-run();
