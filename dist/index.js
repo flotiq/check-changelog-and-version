@@ -34402,6 +34402,7 @@ async function run() {
       failed = true;
     }
 
+    console.log(fs.readFileSync(changelogFile));
     const changelogParser = new ChangelogParser({
       text: await fs.readFileSync(changelogFile),
     });
