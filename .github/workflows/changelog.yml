@@ -19,4 +19,4 @@ jobs:
       - uses: flotiq/check-changelog-and-version@v0.1.5
         with:
           changelog_file: CHANGELOG.md
-          version_file: VERSION
+          version_file: package.json
