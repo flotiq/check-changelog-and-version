@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 100
-      - uses: flotiq/check-changelog-and-version
+      - uses: flotiq/check-changelog-and-version@v1.0.0
         with:
           changelog_file: CHANGELOG.md
           version_file: package.json
