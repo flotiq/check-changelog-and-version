@@ -88,6 +88,7 @@ async function run() {
     }
 
     console.log(execSync(`npx semver-compare-cli ${currentVersion} gt ${oldVersion}`));
+    console.log(execSync(`npx semver-compare-cli ${currentVersion} gt ${oldVersion}`).toString().trim());
     if (execSync(`npx semver-compare-cli ${currentVersion} gt ${oldVersion}`).toString().trim() === '0') {
       echoGreen(`version in ${versionFile} increased on ${sourceBranch}`);
     } else {
