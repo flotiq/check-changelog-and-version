@@ -9,9 +9,6 @@ on:
 jobs:
   check-changelog:
     runs-on: ubuntu-latest
-    env:
-      CI_MERGE_REQUEST_SOURCE_BRANCH_NAME: ${{ github.event.pull_request.head.ref }}
-      CI_MERGE_REQUEST_TARGET_BRANCH_NAME: ${{ github.event.pull_request.base.ref }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -23,6 +20,12 @@ jobs:
           cache: 'yarn'
       - name: Install dependencies
         run: yarn install --frozen-lockfile --force
+      - name: Debug npx path
+        run: |
+          ls -al node_modules
+          npx which @actions/core
+          npx which @actions/github
+          node -v
       - uses: flotiq/check-changelog-and-version@v0.1.2
         with:
           changelog_file: CHANGELOG.md
