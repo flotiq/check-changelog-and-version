@@ -126,9 +126,8 @@ export async function run() {
       failed = true;
     }
 
-    console.log(await fs.readFileSync(changelogFile));
     const changelogParser = new ChangelogParser({
-      text: await fs.readFileSync(changelogFile),
+      text: fs.readFileSync(changelogFile, { encoding: 'utf8', flag: 'r' }),
     });
 
     let changelogStruct = changelogParser.parse();
