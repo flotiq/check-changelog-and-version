@@ -34408,10 +34408,9 @@ async function run() {
 
     let changelogStruct = changelogParser.parse();
 
-    try {
-      changelogStruct.versions.find((v) => v.version === currentVersion);
+    if (changelogStruct.versions?.find((v) => v.version === currentVersion)) {
       echoGreen(`${changelogFile} file contains ${currentVersion}`);
-    } catch (e) {
+    } else {
       echoRed(`${changelogFile} file does not contain ${currentVersion}`);
       failed = true;
     }
