@@ -27,8 +27,8 @@ async function run() {
     }
 
     // Install dependencies
-    execSync('npx -q semver-compare-cli --help > /dev/null || npm install -g semver-compare-cli');
-    execSync('npx -q changelog-parser --help > /dev/null || npm install -g changelog-parser');
+    execSync('npx semver-compare-cli --help > /dev/null');
+    execSync('npx changelog-parser --help > /dev/null');
 
     // Make sure CHANGELOG has Unix line endings
     if (fs.existsSync(changelogFile)) {
