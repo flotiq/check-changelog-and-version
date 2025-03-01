@@ -31829,7 +31829,7 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(3905);
 const github = __nccwpck_require__(6661);
 const fs = __nccwpck_require__(9896);
-const { execSync } = __nccwpck_require__(5317);
+const { execSync, spawnSync } = __nccwpck_require__(5317);
 
 async function run() {
   try {
