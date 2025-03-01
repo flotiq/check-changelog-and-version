@@ -1,6 +1,6 @@
 {
   "name": "check-changelog-and-version",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "src/index.js",
   "repository": "https://github.com/flotiq/check-changelog-and-version.git",
   "author": "Hello FLotiq <hello@flotiq.com>",
