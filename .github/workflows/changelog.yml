@@ -1,0 +1,22 @@
+name: Check Changelog and Version
+
+on:
+  pull_request:
+    branches:
+      - master
+      - main
+
+jobs:
+  check-changelog:
+    runs-on: ubuntu-latest
+    env:
+      CI_MERGE_REQUEST_SOURCE_BRANCH_NAME: ${{ github.event.pull_request.head.ref }}
+      CI_MERGE_REQUEST_TARGET_BRANCH_NAME: ${{ github.event.pull_request.base.ref }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 100
+      - uses: ./
+        with:
+          changelog_file: CHANGELOG.md
+          version_file: package.json
