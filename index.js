@@ -87,14 +87,14 @@ async function run() {
       failed = true;
     }
 
-    if (execSync(`npx semver-compare-cli ${currentVersion} gt ${oldVersion}`).toString().trim() === '1') {
+    if (execSync(`npx semver-compare-cli ${currentVersion} gt ${oldVersion}`).toString().trim() === '0') {
       echoGreen(`version in ${versionFile} increased on ${sourceBranch}`);
     } else {
       echoRed(`version in ${versionFile} needs to increase on ${sourceBranch}`);
       failed = true;
     }
 
-    if (execSync(`npx semver-compare-cli ${currentVersion} gt ${remoteVersion}`).toString().trim() === '1') {
+    if (execSync(`npx semver-compare-cli ${currentVersion} gt ${remoteVersion}`).toString().trim() === '0') {
       echoGreen(`version in ${versionFile} increased compared to current ${targetRef}`);
     } else {
       echoRed(`version in ${versionFile} needs to be higher than on ${targetRef}`);
