@@ -10,8 +10,5 @@ inputs:
     required: true
     default: 'package.json'
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  env:
-    CHANGELOG_FILE: ${{ inputs.changelog_file }}
-    VERSION_FILE: ${{ inputs.version_file }}
+  using: 'node20'
+  main: 'index.js'
