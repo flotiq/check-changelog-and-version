@@ -35,7 +35,7 @@ jobs:
           cache: 'yarn'
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-      - uses: flotiq/check-changelog-and-version
+      - uses: flotiq/check-changelog-and-version@1.0.0
         with:
           changelog_file: CHANGELOG.md
           version_file: package.json
