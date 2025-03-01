@@ -20,6 +20,8 @@ jobs:
           cache: 'yarn'
       - name: Install dependencies
         run: yarn install --frozen-lockfile --force
+      - name: Install which
+        run: sudo apt-get update && sudo apt-get install -y which
       - name: Debug npx path
         run: |
           ls -al node_modules
