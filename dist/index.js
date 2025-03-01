@@ -31915,14 +31915,19 @@ async function run() {
       failed = true;
     }
 
-    if (execSync(`npx semver-compare-cli ${currentVersion} ${oldVersion}`).toString().trim() === '1') {
+    function semverCompare(version1, version2) {
+      const result = spawnSync('npx', ['semver-compare-cli', version1, version2]);
+      return result.status; // Get the exit code
+    }
+
+    if (semverCompare(currentVersion, oldVersion) === 0) {
       echoGreen(`version in ${versionFile} increased on ${sourceBranch}`);
     } else {
       echoRed(`version in ${versionFile} needs to increase on ${sourceBranch}`);
       failed = true;
     }
 
-    if (execSync(`npx semver-compare-cli ${currentVersion} ${remoteVersion}`).toString().trim() === '1') {
+    if (semverCompare(currentVersion, remoteVersion) === 0) {
       echoGreen(`version in ${versionFile} increased compared to current ${targetRef}`);
     } else {
       echoRed(`version in ${versionFile} needs to be higher than on ${targetRef}`);
