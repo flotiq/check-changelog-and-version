@@ -5,6 +5,9 @@
   "repository": "https://github.com/flotiq/check-changelog-and-version.git",
   "author": "Hello FLotiq <hello@flotiq.com>",
   "license": "MIT",
+  "scripts": {
+    "bundle": "npm run format:write && npm run package"
+  },
   "dependencies": {
     "@actions/core": "^1.11.1",
     "@actions/github": "^6.0.0"

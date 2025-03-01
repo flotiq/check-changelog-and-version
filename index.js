@@ -89,6 +89,7 @@ async function run() {
 
     function semverCompare(version1, version2) {
       const result = spawnSync('npx', ['semver-compare-cli', version1, version2]);
+      console.log(result);
       return result.status; // Get the exit code
     }
 
