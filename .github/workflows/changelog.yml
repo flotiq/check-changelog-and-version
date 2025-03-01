@@ -22,17 +22,7 @@ jobs:
           node-version: '20'
           cache: 'yarn'
       - name: Install dependencies
-        run: |
-          yarn cache clean
-          yarn install --frozen-lockfile --force
-      - name: Debug node_modules
-        run: ls -al node_modules
-      - name: Debug npx path
-        run: |
-          which npx
-          npx which semver-compare-cli
-          npx which changelog-parser
-          node -v
+        run: yarn install --frozen-lockfile --force
       - uses: flotiq/check-changelog-and-version@v0.1.2
         with:
           changelog_file: CHANGELOG.md
