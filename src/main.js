@@ -126,7 +126,7 @@ export async function run() {
       failed = true;
     }
 
-    console.log(fs.readFileSync(changelogFile));
+    console.log(await fs.readFileSync(changelogFile));
     const changelogParser = new ChangelogParser({
       text: await fs.readFileSync(changelogFile),
     });
