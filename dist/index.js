@@ -31833,10 +31833,10 @@ const { execSync } = __nccwpck_require__(5317);
 
 async function run() {
   try {
-    const changelogFile = core.getInput('changelog_file');
-    const versionFile = core.getInput('version_file');
-    const sourceBranch = github.context.payload.pull_request.head.ref;
-    const targetBranch = github.context.payload.pull_request.base.ref;
+    const changelogFile = core.getInput('changelog_file') || 'CHANGELOG.md';
+    const versionFile = core.getInput('version_file') || 'package.json';
+    const sourceBranch = github.context.payload.pull_request?.head?.ref;
+    const targetBranch = github.context.payload.pull_request?.base?.ref || 'main';
 
     const red = '\x1b[31;1m';
     const green = '\x1b[32;1m';
@@ -31915,14 +31915,14 @@ async function run() {
       failed = true;
     }
 
-    if (execSync(`npx semver-compare-cli ${currentVersion} gt ${oldVersion}`).toString().trim() === '1') {
+    if (execSync(`npx semver-compare-cli ${currentVersion} ${oldVersion}`).toString().trim() === '1') {
       echoGreen(`version in ${versionFile} increased on ${sourceBranch}`);
     } else {
       echoRed(`version in ${versionFile} needs to increase on ${sourceBranch}`);
       failed = true;
     }
 
-    if (execSync(`npx semver-compare-cli ${currentVersion} gt ${remoteVersion}`).toString().trim() === '1') {
+    if (execSync(`npx semver-compare-cli ${currentVersion} ${remoteVersion}`).toString().trim() === '1') {
       echoGreen(`version in ${versionFile} increased compared to current ${targetRef}`);
     } else {
       echoRed(`version in ${versionFile} needs to be higher than on ${targetRef}`);
