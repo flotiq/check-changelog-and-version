@@ -1,7 +1,6 @@
 ---
-name: "Bug report"
+name: 'Bug report'
 about: Report reproducible software issues, so we can improve
-
 ---
 
 Welcome to the check changelog and version workflow reusable action repo!
@@ -16,10 +15,11 @@ A summary of the issue and the repository in which it occurs.
 
 PASTE THE ERROR HERE
 
-Any other info e.g. Why do you consider this to be a bug? What did you expect to happen instead?
+Any other info e.g. Why do you consider this to be a bug? What did you expect to
+happen instead?
 
 ### Technical details:
 
-* Link to changelog:
-* Link to file with version:
-* Link to workflow file:
+- Link to changelog:
+- Link to file with version:
+- Link to workflow file:
