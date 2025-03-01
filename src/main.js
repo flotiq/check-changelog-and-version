@@ -1,7 +1,9 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
 import fs from 'fs';
-import { execSync, spawnSync } from 'child_process';
+import { execSync } from 'child_process';
+import { ChangelogParser } from 'changelog-tools';
+import semver from 'semver';
 
 export async function run() {
   try {
@@ -26,14 +28,6 @@ export async function run() {
     function readVersion(fileContent) {
       return JSON.parse(fileContent).version;
     }
-
-    // Install dependencies
-    execSync(
-      'npx -q semver-compare-cli --help > /dev/null || npm install -g semver-compare-cli'
-    );
-    execSync(
-      'npx -q changelog-parser --help > /dev/null || npm install -g changelog-parser'
-    );
 
     // Make sure CHANGELOG has Unix line endings
     if (fs.existsSync(changelogFile)) {
@@ -110,24 +104,18 @@ export async function run() {
       failed = true;
     }
 
-    function semverCompare(version1, version2) {
-      const result = spawnSync('npx', [
-        'semver-compare-cli',
-        version1,
-        version2,
-      ]);
-      console.log(result);
-      return result.status; // Get the exit code
+    function semverCompare(newVersion, oldVersion) {
+      return semver.gt(newVersion, oldVersion);
     }
 
-    if (semverCompare(currentVersion, oldVersion) === 1) {
+    if (semverCompare(currentVersion, oldVersion)) {
       echoGreen(`version in ${versionFile} increased on ${sourceBranch}`);
     } else {
       echoRed(`version in ${versionFile} needs to increase on ${sourceBranch}`);
       failed = true;
     }
 
-    if (semverCompare(currentVersion, remoteVersion) === 1) {
+    if (semverCompare(currentVersion, remoteVersion)) {
       echoGreen(
         `version in ${versionFile} increased compared to current ${targetRef}`
       );
@@ -138,19 +126,15 @@ export async function run() {
       failed = true;
     }
 
-    let changelogStruct = '{"versions":[]}';
-    if (fs.existsSync(changelogFile)) {
-      changelogStruct = execSync(
-        `npx changelog-parser ${changelogFile}`
-      ).toString();
-    }
+    const changelogParser = new ChangelogParser({
+      text: fs.readFileSync(changelogFile, { encoding: 'utf8', flag: 'r' }),
+    });
 
-    try {
-      JSON.parse(changelogStruct).versions.find(
-        (v) => v.version === currentVersion
-      );
+    let changelogStruct = changelogParser.parse();
+
+    if (changelogStruct.filter((v) => v.version === currentVersion)) {
       echoGreen(`${changelogFile} file contains ${currentVersion}`);
-    } catch (e) {
+    } else {
       echoRed(`${changelogFile} file does not contain ${currentVersion}`);
       failed = true;
     }
