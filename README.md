@@ -34,6 +34,14 @@ jobs:
           version_file: package.json
 ```
 
+## Development
+
+`index.js` file have to be compiled before commiting, use:
+
+```
+npm i -g @vercel/ncc
+ncc build index.js --license license
+```
 
 ## Collaborating
 
