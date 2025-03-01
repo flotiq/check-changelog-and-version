@@ -20,14 +20,6 @@ jobs:
           cache: 'yarn'
       - name: Install dependencies
         run: yarn install --frozen-lockfile --force
-      - name: Install which
-        run: sudo apt-get update && sudo apt-get install -y which
-      - name: Debug npx path
-        run: |
-          ls -al node_modules
-          npx which @actions/core
-          npx which @actions/github
-          node -v
       - uses: flotiq/check-changelog-and-version@v0.1.2
         with:
           changelog_file: CHANGELOG.md
