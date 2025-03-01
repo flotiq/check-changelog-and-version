@@ -5,10 +5,10 @@ const { execSync } = require('child_process');
 
 async function run() {
   try {
-    const changelogFile = core.getInput('changelog_file');
-    const versionFile = core.getInput('version_file');
-    const sourceBranch = github.context.payload.pull_request.head.ref;
-    const targetBranch = github.context.payload.pull_request.base.ref;
+    const changelogFile = core.getInput('changelog_file') || 'CHANGELOG.md';
+    const versionFile = core.getInput('version_file') || 'package.json';
+    const sourceBranch = github.context.payload.pull_request?.head?.ref;
+    const targetBranch = github.context.payload.pull_request?.base?.ref || 'main';
 
     const red = '\x1b[31;1m';
     const green = '\x1b[32;1m';
