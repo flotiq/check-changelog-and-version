@@ -1,6 +1,6 @@
 {
   "name": "check-changelog-and-version",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "main": "index.js",
   "repository": "https://github.com/flotiq/check-changelog-and-version.git",
   "author": "Hello FLotiq <hello@flotiq.com>",
@@ -8,9 +8,5 @@
   "dependencies": {
     "@actions/core": "^1.11.1",
     "@actions/github": "^6.0.0"
-  },
-  "devDependencies": {
-    "changelog-parser": "^3.0.1",
-    "semver-compare-cli": "^2.0.0"
   }
 }
