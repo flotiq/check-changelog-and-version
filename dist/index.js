@@ -34302,7 +34302,7 @@ async function run() {
     }
 
     function readVersion(fileContent) {
-      return JSON.parse(fileContent).version;
+      return JSON.parse(fileContent).version || '0.0.0';
     }
 
     // Make sure CHANGELOG has Unix line endings
