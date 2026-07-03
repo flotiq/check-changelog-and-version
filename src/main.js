@@ -26,7 +26,7 @@ export async function run() {
     }
 
     function readVersion(fileContent) {
-      return JSON.parse(fileContent).version;
+      return JSON.parse(fileContent).version || '0.0.0'; // assume 0.0.0 if package.json has no version field
     }
 
     // Make sure CHANGELOG has Unix line endings
